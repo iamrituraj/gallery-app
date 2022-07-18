@@ -60,9 +60,11 @@ const Image = () => {
                   <Link to={`/${item._id}/edit`}>
                     <button className="btn">Edit</button>
                   </Link>
-                  <button className="btn" onClick={deleteImage}>
-                    Delete
-                  </button>
+                  <Link to={`/delete`}>
+                    <button className="btn" onClick={deleteImage}>
+                      Delete
+                    </button>{" "}
+                  </Link>
                 </div>
                 <p className="details">{item.ImgDetails}</p>
               </div>
