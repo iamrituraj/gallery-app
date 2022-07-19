@@ -50,8 +50,8 @@ const Image = () => {
             return (
               <div className="img-container" key={item._id}>
                 <h3 className="heading">{item.ImgName}</h3>
-                <div className="img">
-                  <img src={item.ImgUrl} alt="new"></img>
+                <div className="main-img img">
+                  <img className="" src={item.ImgUrl} alt="new"></img>
                 </div>
                 <div className="button-wrapper">
                   <Link to={`/new`}>

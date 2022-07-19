@@ -6,10 +6,7 @@ import { Link } from "react-router-dom";
 const Home = () => {
   const [data, setData] = useState([]);
   const [page, setPage] = useState(1);
-  const [searchData, setSearchData] = useState("nothing");
-  const [search, setSearch] = useState(false);
   
-
   useEffect(() => {
     const fetch_images = async () => {
       const res = await publicRequest.get(`/images`);
@@ -19,17 +16,13 @@ const Home = () => {
     fetch_images();
   }, []);
 
-
   const searchImage = (val) => {
-    console.log(val);
-    setSearch(true);
 
-    if (val == "nothing")
-      return data;
+    const temp =  data.filter((d) => {
+       return (val.toLowerCase().includes(d.ImgName.toLowerCase()))
+    });
 
-    return data.filter((data) => {
-       return (val.toLowerCase().includes(data.ImgName.toLowerCase()))
-     });
+    setData(temp);
    };
 
   const goToNextPage = () => {
@@ -39,10 +32,12 @@ const Home = () => {
   const goToPreviousPage = () => {
     setPage((p) => p - 1);
   };
-  function changePage(event) {
+
+  const  changePage = (event) => {
     const pageNumber = Number(event.target.textContent);
     setPage(pageNumber);
   }
+
   const getPaginatedData = () => {
     const startIndex = page * 9 - 9;
     const endIndex = startIndex + 9;
@@ -60,15 +55,14 @@ const Home = () => {
         <div>
           <h3 className="heading">Gallery App 🖼️ </h3>
           <input
-            onChange={(e) => setSearchData(e.target.value)}
+            onChange={(e) => searchImage(e.target.value)}
             type="Search"
             placeholder="Search in this gallery ..."
           />
         </div>
         <div className="image-wrapper">
           {
-            search == false
-            ? ( getPaginatedData().map((item) => {
+            getPaginatedData().map((item) => {
                 return (
                   <div className="image-container">
                     <Link to={`/show/${item._id}`}>
@@ -81,22 +75,6 @@ const Home = () => {
                   </div>
                 );
             })
-            )
-              : ( searchImage(searchData).map((item) => {
-                console.log(item);
-                return (
-                  <div className="image-container">
-                    <Link to={`/show/${item._id}`}>
-                      <img
-                        className="image"
-                        key={item._id}
-                        src={item.ImgUrl}
-                      ></img>
-                    </Link>
-                  </div>
-                )
-              }
-            ))
           }
         </div>
 
